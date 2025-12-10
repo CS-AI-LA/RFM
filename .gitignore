@@ -1,17 +1,12 @@
-# Environments
-DSProjectVenv/
+# Ignore virtual environment
+RFMVenv/
+venv/
 .env/
 
-# Data
-data/raw/
-data/processed/
+# Ignore Jupyter checkpoints
+**/.ipynb_checkpoints
 
-# Jupyter
-.ipynb_checkpoints/
-
-# VS Code
-.vscode/
-
-# Python cache
-__pycache__/
+# Ignore system files
 *.pyc
+__pycache__/
+.DS_Store
