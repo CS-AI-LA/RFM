@@ -1,0 +1,169 @@
+[33mcommit 099031b9d83957770dcf216f513afbd0ddcb7cfd[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: Lida Abdi <lida.abdi@gmail.com>
+Date:   Tue Dec 9 19:25:26 2025 +0000
+
+    RFM Model
+
+[1mdiff --git a/notebooks/RFM.ipynb b/notebooks/RFM.ipynb[m
+[1mnew file mode 100644[m
+[1mindex 00000000..45ea322c[m
+[1m--- /dev/null[m
+[1m+++ b/notebooks/RFM.ipynb[m
+[36m@@ -0,0 +1,861 @@[m
+[32m+[m[32m{[m
+[32m+[m[32m "cells": [[m
+[32m+[m[32m  {[m
+[32m+[m[32m   "cell_type": "code",[m
+[32m+[m[32m   "execution_count": 31,[m
+[32m+[m[32m   "id": "de25f3ab",[m
+[32m+[m[32m   "metadata": {},[m
+[32m+[m[32m   "outputs": [],[m
+[32m+[m[32m   "source": [[m
+[32m+[m[32m    "import pandas as pd\n",[m
+[32m+[m[32m    "from datetime import datetime as dt,timedelta\n",[m
+[32m+[m[32m    "import plotly.express as px\n",[m
+[32m+[m[32m    "import plotly.graph_objects as go\n",[m
+[32m+[m[32m    "import plotly.colors"[m
+[32m+[m[32m   ][m
+[32m+[m[32m  },[m
+[32m+[m[32m  {[m
+[32m+[m[32m   "cell_type": "code",[m
+[32m+[m[32m   "execution_count": 32,[m
+[32m+[m[32m   "id": "84420d94",[m
+[32m+[m[32m   "metadata": {},[m
+[32m+[m[32m   "outputs": [[m
+[32m+[m[32m    {[m
+[32m+[m[32m     "data": {[m
+[32m+[m[32m      "text/html": [[m
+[32m+[m[32m       "<div>\n",[m
+[32m+[m[32m       "<style scoped>\n",[m
+[32m+[m[32m       "    .dataframe tbody tr th:only-of-type {\n",[m
+[32m+[m[32m       "        vertical-align: middle;\n",[m
+[32m+[m[32m       "    }\n",[m
+[32m+[m[32m       "\n",[m
+[32m+[m[32m       "    .dataframe tbody tr th {\n",[m
+[32m+[m[32m       "        vertical-align: top;\n",[m
+[32m+[m[32m       "    }\n",[m
+[32m+[m[32m       "\n",[m
+[32m+[m[32m       "    .dataframe thead th {\n",[m
+[32m+[m[32m       "        text-align: right;\n",[m
+[32m+[m[32m       "    }\n",[m
+[32m+[m[32m       "</style>\n",[m
+[32m+[m[32m       "<table border=\"1\" class=\"dataframe\">\n",[m
+[32m+[m[32m       "  <thead>\n",[m
+[32m+[m[32m       "    <tr style=\"text-align: right;\">\n",[m
+[32m+[m[32m       "      <th></th>\n",[m
+[32m+[m[32m       "      <th>InvoiceNo</th>\n",[m
+[32m+[m[32m       "      <th>StockCode</th>\n",[m
+[32m+[m[32m       "      <th>Description</th>\n",[m
+[32m+[m[32m       "      <th>Quantity</th>\n",[m
+[32m+[m[32m       "      <th>InvoiceDate</th>\n",[m
+[32m+[m[32m       "      <th>UnitPrice</th>\n",[m
+[32m+[m[32m       "      <th>CustomerID</th>\n",[m
+[32m+[m[32m       "      <th>Country</th>\n",[m
+[32m+[m[32m       "    </tr>\n",[m
+[32m+[m[32m       "  </thead>\n",[m
+[32m+[m[32m       "  <tbody>\n",[m
+[32m+[m[32m       "    <tr>\n",[m
+[32m+[m[32m       "      <th>0</th>\n",[m
+[32m+[m[32m       "      <td>536365</td>\n",[m
+[32m+[m[32m       "      <td>85123A</td>\n",[m
+[32m+[m[32m       "      <td>WHITE HANGING HEART T-LIGHT HOLDER</td>\n",[m
+[32m+[m[32m       "      <td>6</td>\n",[m
+[32m+[m[32m       "      <td>2010-12-01 08:26:00</td>\n",[m
+[32m+[m[32m       "      <td>2.55</td>\n",[m
+[32m+[m[32m       "      <td>17850.0</td>\n",[m
+[32m+[m[32m       "      <td>United Kingdom</td>\n",[m
+[32m+[m[32m       "    </tr>\n",[m
+[32m+[m[32m       "    <tr>\n",[m
+[32m+[m[32m       "      <th>1</th>\n",[m
+[32m+[m[32m       "      <td>536365</td>\n",[m
+[32m+[m[32m       "      <td>71053</td>\n",[m
+[32m+[m[32m       "      <td>WHITE METAL LANTERN</td>\n",[m
+[32m+[m[32m       "      <td>6</td>\n",[m
+[32m+[m[32m       "      <td>2010-12-01 08:26:00</td>\n",[m
+[32m+[m[32m       "      <td>3.39</td>\n",[m
+[32m+[m[32m       "      <td>17850.0</td>\n",[m
+[32m+[m[32m       "      <td>United Kingdom</td>\n",[m
+[32m+[m[32m       "    </tr>\n",[m
+[32m+[m[32m       "    <tr>\n",[m
+[32m+[m[32m       "      <th>2</th>\n",[m
+[32m+[m[32m       "      <td>536365</td>\n",[m
+[32m+[m[32m       "      <td>84406B</td>\n",[m
+[32m+[m[32m       "      <td>CREAM CUPID HEARTS COAT HANGER</td>\n",[m
+[32m+[m[32m       "      <td>8</td>\n",[m
+[32m+[m[32m       "      <td>2010-12-01 08:26:00</td>\n",[m
+[32m+[m[32m       "      <td>2.75</td>\n",[m
+[32m+[m[32m       "      <td>17850.0</td>\n",[m
+[32m+[m[32m       "      <td>United Kingdom</td>\n",[m
+[32m+[m[32m       "    </tr>\n",[m
+[32m+[m[32m       "    <tr>\n",[m
+[32m+[m[32m       "      <th>3</th>\n",[m
+[32m+[m[32m       "      <td>536365</td>\n",[m
+[32m+[m[32m       "      <td>84029G</td>\n",[m
+[32m+[m[32m       "      <td>KNITTED UNION FLAG HOT WATER BOTTLE</td>\n",[m
+[32m+[m[32m       "      <td>6</td>\n",[m
+[32m+[m[32m       "      <td>2010-12-01 08:26:00</td>\n",[m
+[32m+[m[32m       "      <td>3.39</td>\n",[m
+[32m+[m[32m       "      <td>17850.0</td>\n",[m
+[32m+[m[32m       "      <td>United Kingdom</td>\n",[m
+[32m+[m[32m       "    </tr>\n",[m
+[32m+[m[32m       "    <tr>\n",[m
+[32m+[m[32m       "      <th>4</th>\n",[m
+[32m+[m[32m       "      <td>536365</td>\n",[m
+[32m+[m[32m       "      <td>84029E</td>\n",[m
+[32m+[m[32m       "      <td>RED WOOLLY HOTTIE WHITE HEART.</td>\n",[m
+[32m+[m[32m       "      <td>6</td>\n",[m
+[32m+[m[32m       "      <td>2010-12-01 08:26:00</td>\n",[m
+[32m+[m[32m       "      <td>3.39</td>\n",[m
+[32m+[m[32m       "      <td>17850.0</td>\n",[m
+[32m+[m[32m       "      <td>United Kingdom</td>\n",[m
+[32m+[m[32m       "    </tr>\n",[m
+[32m+[m[32m       "  </tbody>\n",[m
+[32m+[m[32m       "</table>\n",[m
+[32m+[m[32m       "</div>"[m
+[32m+[m[32m      ],[m
+[32m+[m[32m      "text/plain": [[m
+[32m+[m[32m       "  InvoiceNo StockCode                          Description  Quantity  \\\n",[m
+[32m+[m[32m       "0    536365    85123A   WHITE HANGING HEART T-LIGHT HOLDER         6   \n",[m
+[32m+[m[32m       "1    536365     71053                  WHITE METAL LANTERN         6   \n",[m
+[32m+[m[32m       "2    536365    84406B       CREAM CUPID HEARTS COAT HANGER         8   \n",[m
+[32m+[m[32m       "3    536365    84029G  KNITTED UNION FLAG HOT WATER BOTTLE         6   \n",[m
+[32m+[m[32m       "4    536365    84029E       RED WOOLLY HOTTIE WHITE HEART.         6   \n",[m
+[32m+[m[32m       "\n",[m
+[32m+[m[32m       "           InvoiceDate  UnitPrice  CustomerID         Country  \n",[m
+[32m+[m[32m       "0  2010-12-01 08:26:00       2.55     17850.0  United Kingdom  \n",[m
+[32m+[m[32m       "1  2010-12-01 08:26:00       3.39     17850.0  United Kingdom  \n",[m
+[32m+[m[32m       "2  2010-12-01 08:26:00       2.75     17850.0  United Kingdom  \n",[m
+[32m+[m[32m       "3  2010-12-01 08:26:00       3.39     17850.0  United Kingdom  \n",[m
+[32m+[m[32m       "4  2010-12-01 08:26:00       3.39     17850.0  United Kingdom  "[m
+[32m+[m[32m      ][m
+[32m+[m[32m     },[m
+[32m+[m[32m     "execution_count": 32,[m
+[32m+[m[32m     "metadata": {},[m
+[32m+[m[32m     "output_type": "execute_result"[m
+[32m+[m[32m    }[m
+[32m+[m[32m   ],[m
+[32m+[m[32m   "source": [[m
+[32m+[m[32m    "data = pd.read_csv('C:/Users/labdi/Lida Info/RFM/data/online_retail.csv')\n",[m
+[32m+[m[32m    "data.head()"[m
+[32m+[m[32m   ][m
+[32m+[m[32m  },[m
+[32m+[m[32m  {[m
+[32m+[m[32m   "cell_type": "code",[m
+[32m+[m[32m   "execution_count": 33,[m
+[32m+[m[32m   "id": "e172446d",[m
+[32m+[m[32m   "metadata": {},[m
+[32m+[m[32m   "outputs": [[m
+[32m+[m[32m    {[m
+[32m+[m[32m     "data": {[m
+[32m+[m[32m      "text/html": [[m
+[32m+[m[32m       "<div>\n",[m
+[32m+[m[32m       "<style scoped>\n",[m
+[32m+[m[32m       "    .dataframe tbody tr th:only-of-type {\n",[m
+[32m+[m[32m       "        vertical-align: middle;\n",[m
+[32m+[m[32m       "    }\n",[m
+[32m+[m[32m       "\n",[m
+[32m+[m[32m       "    .dataframe tbody tr th {\n",[m
+[32m+[m[32m       "        vertical-align: top;\n",[m
+[32m+[m[32m       "    }\n"
