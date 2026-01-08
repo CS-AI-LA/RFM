@@ -1,4 +1,4 @@
-RFM Customer Segmentation Model (Python | Data Analytics)
+RFM Customer Segmentation Model
 
 This project implements an RFM (Recency, Frequency, Monetary) analysis to segment customers based on their purchasing behavior. RFM is a widely used technique in customer analytics, marketing strategy, and CRM systems to identify high-value customers and support data-driven business decisions.
 
@@ -50,3 +50,4 @@ How to Run
 git clone <your-repo-url>
 cd <project-folder>
 jupyter notebook RFM.ipynb
+
